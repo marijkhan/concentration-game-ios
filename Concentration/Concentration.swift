@@ -26,19 +26,20 @@ class Concentration
     func PickCard(at index: Int)
     {
         if !Cards[index].isMatched {
-            if indexOfOneAndOnlyCard != nil {
-                if Cards[indexOfOneAndOnlyCard!].identifier == Cards[index].identifier {
-                    Cards[indexOfOneAndOnlyCard!].isMatched = true;
-                    Cards[index].isMatched = true;
-                } else {
-                    indexOfOneAndOnlyCard = nil
+            if let matchedIndex = indexOfOneAndOnlyCard, index != matchedIndex {
+                if Cards[matchedIndex].identifier == Cards[index].identifier {
+                    Cards[matchedIndex].isMatched = true
+                    Cards[index].isMatched = true
                 }
-            } else {
-                for Index in Cards.indices {
-                    Cards[Index].isFaceUp = false
-                }
-                indexOfOneAndOnlyCard = index
                 Cards[index].isFaceUp = true
+                indexOfOneAndOnlyCard = nil
+            }
+            else {
+                for flipIndex in Cards.indices {
+                    Cards[flipIndex].isFaceUp = false
+                }
+                Cards[index].isFaceUp = true
+                indexOfOneAndOnlyCard = index
             }
         }
     }
