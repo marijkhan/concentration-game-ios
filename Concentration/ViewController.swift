@@ -22,6 +22,11 @@ class ViewController: UIViewController {
     
     @IBOutlet var CardButtons: [UIButton]!
 
+    @IBAction func touchNewGame(_ sender: UIButton) {
+        Game.startNewGame()
+        FlipCount = 0
+        UpdateViewFromModel()
+    }
     
     @IBAction func TouchCard(_ sender: UIButton) {
         let CardNumber = CardButtons.index(of: sender)!
@@ -42,12 +47,18 @@ class ViewController: UIViewController {
             }
             else {
                 Button.setTitle("", for: UIControlState.normal)
-                Button.backgroundColor = card.isMatched ? #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 0) : #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)
+                if (card.isMatched) {
+                    Button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+                    Button.isEnabled = false
+                } else {
+                    Button.isEnabled = true
+                    Button.backgroundColor = #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)
+                }
             }
         }
     }
     
-    var EmojiChoices = ["😚", "😘", "😀", "😍", "😃", "😄"]
+    var EmojiChoices = ["😚", "😘", "😀", "😍", "😃", "😄","😂","🤣","☺️","😊","😇","🙂","🙃","😉","😌"]
     var emoji = [Int:String]();
     
     
