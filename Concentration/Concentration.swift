@@ -21,8 +21,19 @@ class Concentration
             let card = Card()
             Cards += [card, card]
         }
-        
+        shuffleCards()
     }
+    
+    func shuffleCards() {
+        for index in Cards.indices {
+            let randomIndex = Int(arc4random_uniform(uint(Cards.count)))
+            let swapCard = Cards[index]
+            Cards[index] = Cards[randomIndex]
+            Cards[randomIndex] = swapCard
+            
+        }
+    }
+    
     func PickCard(at index: Int)
     {
         if !Cards[index].isMatched {
