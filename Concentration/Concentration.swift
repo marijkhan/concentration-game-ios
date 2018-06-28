@@ -23,22 +23,13 @@ class Concentration
         }
         shuffleCards()
     }
-    
-    func startNewGame() {
-        for index in Cards.indices {
-            Cards[index].isFaceUp = false
-            Cards[index].isMatched = false
-        }
-        shuffleCards()
-    }
-    
+
     func shuffleCards() {
         for index in Cards.indices {
             let randomIndex = Int(arc4random_uniform(uint(Cards.count)))
             let swapCard = Cards[index]
             Cards[index] = Cards[randomIndex]
             Cards[randomIndex] = swapCard
-            
         }
     }
     

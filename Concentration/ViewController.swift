@@ -11,6 +11,11 @@ import UIKit
 class ViewController: UIViewController {
     
     lazy var Game = Concentration(NumberOfCardPairs: (CardButtons.count + 1) / 2)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        startNewGame()
+    }
    
     @IBOutlet weak var Flips: UILabel!
     
@@ -23,9 +28,7 @@ class ViewController: UIViewController {
     @IBOutlet var CardButtons: [UIButton]!
 
     @IBAction func touchNewGame(_ sender: UIButton) {
-        Game.startNewGame()
-        FlipCount = 0
-        UpdateViewFromModel()
+        startNewGame()
     }
     
     @IBAction func TouchCard(_ sender: UIButton) {
@@ -33,6 +36,13 @@ class ViewController: UIViewController {
         Game.PickCard(at: CardNumber)
         UpdateViewFromModel()
         FlipCount += 1
+    }
+    
+    func startNewGame() {
+        Game = Concentration(NumberOfCardPairs: (CardButtons.count + 1) / 2)
+        FlipCount = 0
+        setTheme()
+        UpdateViewFromModel()
     }
     
     func UpdateViewFromModel()
@@ -43,7 +53,6 @@ class ViewController: UIViewController {
             if card.isFaceUp {
                 Button.setTitle(emoji(for: card), for: UIControlState.normal)
                 Button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                //print(emoji(for: card))
             }
             else {
                 Button.setTitle("", for: UIControlState.normal)
@@ -58,13 +67,30 @@ class ViewController: UIViewController {
         }
     }
     
+    func setTheme() {
+        let keysForEmojis = Array(typesOfEmojis.keys)
+        let randomIndex = Int(arc4random_uniform(uint(keysForEmojis.count)))
+        EmojiChoices = typesOfEmojis[keysForEmojis[randomIndex]]!
+    }
+    
+    
+    let typesOfEmojis = [
+        "faceEmojis" : ["😚", "😘", "😀", "😍", "😃", "😄","😂","🤣","☺️","😊","😇","🙂","🙃","😉","😌"],
+        "animalEmojis" : ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐵","🐸"],
+        "sportEmojis" : ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐","🏉","🎱","🏓","🏸","🥅","🏒","🏑","🏏","🥊"],
+        "foodEmojis" : ["🍏", "🍎", "🍐", "🍊", "🍋", "🍌","🍉","🍇","🍓","🍈","🍒","🍑","🍍","🥥","🥝"],
+        "flagEmojis" : ["🏳️", "🏴", "🏁", "🚩", "🏳️‍🌈", "🇦🇫","🇦🇽","🇦🇱","🇩🇿","🇦🇸","🇦🇩","🇦🇴","🇦🇮","🇦🇶","🇦🇬"],
+        "vehicleEmojis" : ["🚗", "🚕", "🚙", "🚌", "🚎", "🚘","🚖","🚔","🚑","🚓","🏎","🏍","🚛","🚚","🚒"]
+        ]
+    
+    
     var EmojiChoices = ["😚", "😘", "😀", "😍", "😃", "😄","😂","🤣","☺️","😊","😇","🙂","🙃","😉","😌"]
+    
     var emoji = [Int:String]();
     
     
     func emoji(for card: Card) -> String
     {
-        //let chosenEmoji = emoji[card.identifier]
         if (emoji[card.identifier] == nil), (EmojiChoices.count > 0) {
             let randomIndex = Int(arc4random_uniform(uint(EmojiChoices.count)))
             emoji[card.identifier] = EmojiChoices.remove(at: randomIndex)
