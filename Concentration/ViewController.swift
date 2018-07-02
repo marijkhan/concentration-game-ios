@@ -10,7 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    lazy var Game = Concentration(NumberOfCardPairs: (CardButtons.count + 1) / 2)
+    lazy var Game = Concentration(NumberOfCardPairs: numberOfPairsOfCards)
+    
+    var numberOfPairsOfCards: Int {
+        return (CardButtons.count + 1) / 2
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +22,8 @@ class ViewController: UIViewController {
     }
    
     @IBOutlet weak var Flips: UILabel!
+    
+    @IBOutlet weak var Score: UILabel!
     
     var FlipCount = 0 {
         didSet {
@@ -65,6 +71,7 @@ class ViewController: UIViewController {
                 }
             }
         }
+        Score.text = "Score: \(Game.Score)"
     }
     
     func setTheme() {

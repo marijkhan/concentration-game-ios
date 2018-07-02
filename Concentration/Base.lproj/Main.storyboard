@@ -191,8 +191,15 @@
                                     <action selector="touchNewGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Flq-BA-s5J"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nWY-No-5YV">
+                                <rect key="frame" x="149" y="564" width="146" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.32852089410000002" blue="0.57488495110000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Wte-JB-zF5" secondAttribute="bottom" constant="22" id="44h-LF-qE2"/>
                             <constraint firstItem="Bj1-QO-wA4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="149" id="4AK-rJ-LZe"/>
@@ -207,6 +214,7 @@
                     </view>
                     <connections>
                         <outlet property="Flips" destination="Wte-JB-zF5" id="cRm-d8-THQ"/>
+                        <outlet property="Score" destination="nWY-No-5YV" id="9JY-xe-VRy"/>
                         <outletCollection property="CardButtons" destination="BCY-Si-IXB" collectionClass="NSMutableArray" id="O31-jv-uap"/>
                         <outletCollection property="CardButtons" destination="YtY-uf-48x" collectionClass="NSMutableArray" id="E2Z-M1-6jt"/>
                         <outletCollection property="CardButtons" destination="fcH-th-PLG" collectionClass="NSMutableArray" id="bFh-rh-GaX"/>
