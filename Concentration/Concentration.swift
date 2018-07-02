@@ -10,9 +10,12 @@ import Foundation
 
 class Concentration
 {
-    var Cards = [Card]()
+    private(set) var Cards = [Card]()
     
-    var indexOfOneAndOnlyCard : Int? {
+    private(set) var Score = 0
+    private(set) var flipCount = 0
+    
+    private var indexOfOneAndOnlyCard : Int? {
         get {
             var foundIndex: Int?
             for index in Cards.indices {
@@ -33,10 +36,10 @@ class Concentration
         }
     }
     
-    var Score = 0
     
     init(NumberOfCardPairs: Int)
     {
+        assert(NumberOfCardPairs > 0, "Concentration.init(NumberOfCardPairs: \(NumberOfCardPairs): There must be at least one card pair")
         for _ in 1...NumberOfCardPairs
         {
             let card = Card()
@@ -45,7 +48,7 @@ class Concentration
         shuffleCards()
     }
 
-    func shuffleCards() {
+    private func shuffleCards() {
         for index in Cards.indices {
             let randomIndex = Int(arc4random_uniform(uint(Cards.count)))
             let swapCard = Cards[index]
@@ -56,40 +59,47 @@ class Concentration
     
     func PickCard(at index: Int)
     {
+        assert(Cards.indices.contains(index), "Concentration.PickCard(at: \(index): Chosen index not in the cards")
         if !Cards[index].isMatched {
-            if let matchedIndex = indexOfOneAndOnlyCard, index != matchedIndex {
-                if Cards[matchedIndex].identifier == Cards[index].identifier {
-                    Cards[matchedIndex].isMatched = true
-                    Cards[index].isMatched = true
-                    Score += 2
-                } else {
-                    if (Cards[index].wasSeen) {
-                        Score -= 1
+            if let matchedIndex = indexOfOneAndOnlyCard {
+                if index != matchedIndex {
+                    if Cards[matchedIndex].identifier == Cards[index].identifier {
+                        Cards[matchedIndex].isMatched = true
+                        Cards[index].isMatched = true
+                        Score += 2
                     }
                     else {
-                        Cards[index].wasSeen = true;
+                        if (Cards[index].wasSeen) {
+                            Score -= 1
+                        }
+                        else {
+                            Cards[index].wasSeen = true;
+                        }
+                        if (matchingCardWasSeen(of: indexOfOneAndOnlyCard!)) {
+                            Score -= 1
+                        }
+                        if (Cards[indexOfOneAndOnlyCard!].wasSeen) {
+                            Score -= 1
+                        }
+                        else {
+                            Cards[indexOfOneAndOnlyCard!].wasSeen = true;
+                        }
                     }
-                    if (matchingCardWasSeen(of: indexOfOneAndOnlyCard!)) {
-                        Score -= 1
-                    }
-                    if (Cards[indexOfOneAndOnlyCard!].wasSeen) {
-                        Score -= 1
-                    }
-                    else {
-                        Cards[indexOfOneAndOnlyCard!].wasSeen = true;
-                    }
+                    Cards[index].isFaceUp = true
                 }
-                Cards[index].isFaceUp = true
-                
+                else {
+                    flipCount -= 1
+                }
             }
             else {
                 indexOfOneAndOnlyCard = index
             }
+            flipCount += 1
         }
     }
     
 
-    func matchingCardWasSeen(of cardIndex: Int) -> Bool! {
+    private func matchingCardWasSeen(of cardIndex: Int) -> Bool! {
         for index in Cards.indices {
             if Cards[index].identifier == Cards[cardIndex].identifier, cardIndex != index  {
                 return Cards[index].wasSeen

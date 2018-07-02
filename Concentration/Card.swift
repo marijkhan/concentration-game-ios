@@ -15,9 +15,9 @@ struct Card
     var identifier: Int
     var wasSeen = false
     
-    static var IdentifierFactory = 0
+    private static var IdentifierFactory = 0
     
-    static func GetUniqueIdentifier() -> Int
+    private static func GetUniqueIdentifier() -> Int
     {
         IdentifierFactory += 1
         return IdentifierFactory
