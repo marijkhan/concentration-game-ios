@@ -68,7 +68,9 @@ class Concentration
                     }
                     else {
                         Cards[index].wasSeen = true;
-                        
+                    }
+                    if (matchingCardWasSeen(of: indexOfOneAndOnlyCard!)) {
+                        Score -= 1
                     }
                     if (Cards[indexOfOneAndOnlyCard!].wasSeen) {
                         Score -= 1
@@ -81,10 +83,19 @@ class Concentration
                 
             }
             else {
-                
                 indexOfOneAndOnlyCard = index
             }
         }
+    }
+    
+
+    func matchingCardWasSeen(of cardIndex: Int) -> Bool! {
+        for index in Cards.indices {
+            if Cards[index].identifier == Cards[cardIndex].identifier, cardIndex != index  {
+                return Cards[index].wasSeen
+            }
+        }
+        return nil
     }
     
 }
