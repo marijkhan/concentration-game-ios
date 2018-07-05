@@ -181,7 +181,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bj1-QO-wA4">
-                                <rect key="frame" x="132" y="626.33333333333337" width="150" height="51"/>
+                                <rect key="frame" x="132" y="641.33333333333337" width="150" height="36"/>
                                 <color key="backgroundColor" red="0.0048598507420000003" green="0.096086271109999996" blue="0.57499289509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="M5j-0b-jEZ"/>
@@ -223,6 +223,7 @@
                     <connections>
                         <outlet property="Flips" destination="Wte-JB-zF5" id="cRm-d8-THQ"/>
                         <outlet property="Score" destination="nWY-No-5YV" id="9JY-xe-VRy"/>
+                        <outlet property="UIbackground" destination="8bC-Xf-vdC" id="hQ4-DO-MGr"/>
                         <outletCollection property="CardButtons" destination="BCY-Si-IXB" collectionClass="NSMutableArray" id="O31-jv-uap"/>
                         <outletCollection property="CardButtons" destination="YtY-uf-48x" collectionClass="NSMutableArray" id="E2Z-M1-6jt"/>
                         <outletCollection property="CardButtons" destination="fcH-th-PLG" collectionClass="NSMutableArray" id="bFh-rh-GaX"/>

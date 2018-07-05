@@ -11,7 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     
     private(set) lazy var Game = Concentration(NumberOfCardPairs: numberOfPairsOfCards)
-    
+    private var currentTheme = Theme.randomTheme()
+
     var numberOfPairsOfCards: Int {
         return (CardButtons.count + 1) / 2
     }
@@ -25,7 +26,8 @@ class ViewController: UIViewController {
     
     @IBOutlet private weak var Score: UILabel!
     
-    
+    @IBOutlet private weak var UIbackground: UIView!
+
     @IBOutlet private var CardButtons: [UIButton]!
 
     @IBAction private func touchNewGame(_ sender: UIButton) {
@@ -40,6 +42,7 @@ class ViewController: UIViewController {
     
     private func startNewGame() {
         Game = Concentration(NumberOfCardPairs: (CardButtons.count + 1) / 2)
+        currentTheme = Theme.randomTheme()
         setTheme()
         UpdateViewFromModel()
     }
@@ -60,7 +63,7 @@ class ViewController: UIViewController {
                     Button.isEnabled = false
                 } else {
                     Button.isEnabled = true
-                    Button.backgroundColor = #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)
+                    Button.backgroundColor = currentTheme.associatedTheme.cardColor
                 }
             }
         }
@@ -68,27 +71,53 @@ class ViewController: UIViewController {
         Flips.text = "Flips: \(Game.flipCount)"
     }
     
+
     private func setTheme() {
-        let keysForEmojis = Array(typesOfEmojis.keys)
-        let randomIndex = Int(arc4random_uniform(uint(keysForEmojis.count)))
-        EmojiChoices = typesOfEmojis[keysForEmojis[randomIndex]]!
+        EmojiChoices = currentTheme.associatedTheme.emojis
+        UIbackground.backgroundColor = currentTheme.associatedTheme.backGroundColor
     }
     
-    
-    private let typesOfEmojis = [
-        "faceEmojis" : ["😚", "😘", "😀", "😍", "😃", "😄","😂","🤣","☺️","😊","😇","🙂","🙃","😉","😌"],
-        "animalEmojis" : ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐵","🐸"],
-        "sportEmojis" : ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐","🏉","🎱","🏓","🏸","🥅","🏒","🏑","🏏","🥊"],
-        "foodEmojis" : ["🍏", "🍎", "🍐", "🍊", "🍋", "🍌","🍉","🍇","🍓","🍈","🍒","🍑","🍍","🥥","🥝"],
-        "flagEmojis" : ["🏳️", "🏴", "🏁", "🚩", "🏳️‍🌈", "🇦🇫","🇦🇽","🇦🇱","🇩🇿","🇦🇸","🇦🇩","🇦🇴","🇦🇮","🇦🇶","🇦🇬"],
-        "vehicleEmojis" : ["🚗", "🚕", "🚙", "🚌", "🚎", "🚘","🚖","🚔","🚑","🚓","🏎","🏍","🚛","🚚","🚒"]
-        ]
-    
+    private enum Theme : Int {
+        case faceTheme
+        case animalTheme
+        case sportTheme
+        case foodTheme
+        case flagTheme
+        case vehicleTheme
+        
+        var associatedTheme: (emojis: [String], backGroundColor: UIColor, cardColor: UIColor) {
+            switch self {
+            case .faceTheme:
+                return (["😚", "😘", "😀", "😍", "😃", "😄","😂","🤣","☺️","😊","😇","🙂","🙃","😉","😌"],#colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1))
+            case .animalTheme:
+                return (["🐶", "🐱", "🐭", "🐹", "🐰", "🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐵","🐸"],#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1))
+            case .sportTheme:
+                return (["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐","🏉","🎱","🏓","🏸","🥅","🏒","🏑","🏏","🥊"],#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1))
+            case .foodTheme:
+                return (["🍏", "🍎", "🍐", "🍊", "🍋", "🍌","🍉","🍇","🍓","🍈","🍒","🍑","🍍","🥥","🥝"],#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1))
+            case .flagTheme:
+                return (["🏳️", "🏴", "🏁", "🚩", "🏳️‍🌈", "🇦🇫","🇦🇽","🇦🇱","🇩🇿","🇦🇸","🇦🇩","🇦🇴","🇦🇮","🇦🇶","🇦🇬"],#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1), #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1))
+            case .vehicleTheme:
+                return (["🚗", "🚕", "🚙", "🚌", "🚎", "🚘","🚖","🚔","🚑","🚓","🏎","🏍","🚛","🚚","🚒"],#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1))
+            }
+        }
+        private static var count : Int {
+            var maxValue = 0
+            while let _ = Theme(rawValue: maxValue) {
+                maxValue += 1
+            }
+            return maxValue
+        }
+        
+        static func randomTheme() -> Theme {
+            let rand = count.arc4random
+            return Theme(rawValue: rand)!
+        }
+    }
     
     private var EmojiChoices = ["😚", "😘", "😀", "😍", "😃", "😄","😂","🤣","☺️","😊","😇","🙂","🙃","😉","😌"]
     
     private var emoji = [Int:String]();
-    
     
     private func emoji(for card: Card) -> String
     {
