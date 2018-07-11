@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         startNewGame()
     }
-   
+    
     @IBOutlet private weak var Flips: UILabel!
     
     @IBOutlet private weak var Score: UILabel!
@@ -117,14 +117,14 @@ class ViewController: UIViewController {
     
     private var EmojiChoices = ["😚", "😘", "😀", "😍", "😃", "😄","😂","🤣","☺️","😊","😇","🙂","🙃","😉","😌"]
     
-    private var emoji = [Int:String]();
+    private var emoji = [Card:String]();
     
     private func emoji(for card: Card) -> String
     {
-        if (emoji[card.identifier] == nil), (EmojiChoices.count > 0) {
-            emoji[card.identifier] = EmojiChoices.remove(at: EmojiChoices.count.arc4random)
+        if (emoji[card] == nil), (EmojiChoices.count > 0) {
+            emoji[card] = EmojiChoices.remove(at: EmojiChoices.count.arc4random)
         }
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
 }
 
@@ -139,6 +139,12 @@ extension Int {
         else {
             return 0
         }
+    }
+}
+
+extension Collection {
+    func oneAndOnly() -> Element? {
+        return count == 1 ? first : nil
     }
 }
 

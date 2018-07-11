@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Concentration
+struct Concentration
 {
     private(set) var Cards = [Card]()
     
@@ -17,17 +17,7 @@ class Concentration
     
     private var indexOfOneAndOnlyCard : Int? {
         get {
-            var foundIndex: Int?
-            for index in Cards.indices {
-                if Cards[index].isFaceUp {
-                    if foundIndex == nil {
-                        foundIndex = index
-                    } else {
-                        return nil
-                    }
-                }
-            }
-            return foundIndex
+            return Cards.indices.filter{ Cards[$0].isFaceUp }.oneAndOnly()
         }
         set {
             for index in Cards.indices {
@@ -48,22 +38,20 @@ class Concentration
         shuffleCards()
     }
 
-    private func shuffleCards() {
+    private mutating func shuffleCards() {
         for index in Cards.indices {
-            let randomIndex = Int(arc4random_uniform(uint(Cards.count)))
-            let swapCard = Cards[index]
-            Cards[index] = Cards[randomIndex]
-            Cards[randomIndex] = swapCard
+            let randomIndex = Cards.count.arc4random
+            Cards.swapAt(index, randomIndex)
         }
     }
     
-    func PickCard(at index: Int)
+    mutating func PickCard(at index: Int)
     {
         assert(Cards.indices.contains(index), "Concentration.PickCard(at: \(index): Chosen index not in the cards")
         if !Cards[index].isMatched {
             if let matchedIndex = indexOfOneAndOnlyCard {
                 if index != matchedIndex {
-                    if Cards[matchedIndex].identifier == Cards[index].identifier {
+                    if Cards[matchedIndex] == Cards[index] {
                         Cards[matchedIndex].isMatched = true
                         Cards[index].isMatched = true
                         Score += 2
@@ -101,7 +89,7 @@ class Concentration
 
     private func matchingCardWasSeen(of cardIndex: Int) -> Bool! {
         for index in Cards.indices {
-            if Cards[index].identifier == Cards[cardIndex].identifier, cardIndex != index  {
+            if Cards[index] == Cards[cardIndex], cardIndex != index  {
                 return Cards[index].wasSeen
             }
         }
